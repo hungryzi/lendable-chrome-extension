@@ -9,7 +9,6 @@
     "48": "icons/lendable48.png",
     "128": "icons/lendable128.png"
   },
-  "default_locale": "en",
   "content_scripts": [
     {
       "matches": ["https://www.amazon.com/*-ebook*"],
