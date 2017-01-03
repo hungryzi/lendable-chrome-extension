@@ -32,7 +32,7 @@ function buildBlock(text, titleColor) {
   title.appendChild(document.createTextNode(text))
 
   var div = document.createElement('div')
-  div.setAttribute('style', 'padding: 0 11px;')
+  div.setAttribute('style', 'margin-bottom: 11px;')
   div.appendChild(title)
 
   return div
@@ -49,9 +49,10 @@ function addNotLendableBlock() {
 function addLendableBlock() {
   var title = document.getElementById('ebooksProductTitle').innerText
   var lendableContent = buildLendableContent(title)
-  var swatches = document.getElementById('tmmSwatches')
-  if (swatches && (divParent = swatches.getElementsByClassName('selected')[0])) {
-    divParent.appendChild(lendableContent)
+
+  var buybox = document.getElementById('buybox')
+  if (buybox && (divParent = buybox.firstChild)) {
+    divParent.insertBefore(lendableContent, divParent.firstChild)
   }
 }
 
