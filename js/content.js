@@ -9,7 +9,7 @@ function createLink(url, name) {
 }
 
 function buildLendableContent(title) {
-  var encodedTitle = encodeURI('The Brothers Karamazov')
+  var encodedTitle = encodeURI(title)
 
   var booklendingUrl = 'http://www.booklending.com/borrow-book.htm?search=' + encodedTitle
   var booklendingLink = createLink(booklendingUrl, 'BookLending.com')
