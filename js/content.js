@@ -42,10 +42,8 @@ function addBlock(block) {
   var divParent = (buybox = document.getElementById('buybox')) && buybox.firstElementChild
   if (!divParent) {
     divParent = (mediabox = document.getElementById('mediaNoAccordion')) && mediabox.getElementsByClassName('header-price')[0].parentElement
-    console.log('inserting', divParent, mediabox, buybox)
   }
   if (divParent) {
-    console.log('inserting', divParent)
     divParent.insertBefore(block, divParent.firstElementChild)
   }
 }
@@ -61,17 +59,43 @@ function addLendableBlock() {
   addBlock(lendableContent)
 }
 
+function saveBook(isbn, lendable) {
+  firebase.database().ref('isbn/' + isbn).set({
+    lendable: lendable,
+    url: window.location.href,
+    updatedAt: firebase.database.ServerValue.TIMESTAMP
+  });
+}
+
+var config = {
+  apiKey: "AIzaSyC81fHoJ90ADQiz2WKp3mct-IOx2MmNk5k",
+  authDomain: "lendable-test.firebaseapp.com",
+  databaseURL: "https://lendable-test.firebaseio.com",
+  storageBucket: "lendable-test.appspot.com",
+  messagingSenderId: "715069538915"
+};
+firebase.initializeApp(config);
+
 if (detailsTable = document.getElementById('productDetailsTable')) {
-  var items = detailsTable.getElementsByTagName('li');
+  var isbn = undefined
+  var items = detailsTable.getElementsByTagName('li')
   for (item of items) {
+    if (item.innerText.match(/ASIN/)) {
+      isbn = item.childNodes[1].textContent.trim()
+    }
+
     if (item.innerText.match(/Lending/)) {
-      var span = document.createElement('span');
+      var title = document.getElementById('ebooksProductTitle').innerText
       if (item.innerText.match(/Not Enabled/)) {
-        // POST as not lendable
         addNotLendableBlock();
+        if (isbn) {
+          saveBook(isbn, false)
+        }
       } else if (item.innerText.match(/Enabled/)) {
-        // POST as lendable
         addLendableBlock();
+        if (isbn) {
+          saveBook(isbn, true)
+        }
       }
     }
   }
