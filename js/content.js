@@ -17,15 +17,7 @@ function buildLendableContent(title) {
   var lendleUrl = 'http://lendle.me/books/available/?title=' + encodedTitle
   var lendleLink = createLink(lendleUrl, 'Lendle.me')
 
-  var div = document.createElement('div')
-  div.setAttribute('style', 'padding: 0 11px;')
-
-  var title = document.createElement('h5')
-  title.setAttribute('style', 'color: #04b121;')
-  title.setAttribute('class', 'a-text-bold')
-  title.appendChild(document.createTextNode('Lendable book'))
-
-  div.appendChild(title)
+  var div = buildBlock('Lendable', '#04b121')
   div.appendChild(booklendingLink)
   div.appendChild(document.createElement('br'))
   div.appendChild(lendleLink)
@@ -33,7 +25,28 @@ function buildLendableContent(title) {
   return div
 }
 
-function modifyContent(text) {
+function buildBlock(text, titleColor) {
+  var title = document.createElement('h5')
+  title.setAttribute('style', 'color: ' + titleColor)
+  title.setAttribute('class', 'a-text-bold')
+  title.appendChild(document.createTextNode(text))
+
+  var div = document.createElement('div')
+  div.setAttribute('style', 'padding: 0 11px;')
+  div.appendChild(title)
+
+  return div
+}
+
+function addNotLendableBlock() {
+  var lendableContent = buildBlock('Not Lendable', '#000')
+  var swatches = document.getElementById('tmmSwatches')
+  if (swatches && (divParent = swatches.getElementsByClassName('selected')[0])) {
+    divParent.appendChild(lendableContent)
+  }
+}
+
+function addLendableBlock() {
   var title = document.getElementById('ebooksProductTitle').innerText
   var lendableContent = buildLendableContent(title)
   var swatches = document.getElementById('tmmSwatches')
@@ -49,9 +62,10 @@ if (detailsTable = document.getElementById('productDetailsTable')) {
       var span = document.createElement('span');
       if (item.innerText.match(/Not Enabled/)) {
         // POST as not lendable
+        addNotLendableBlock();
       } else if (item.innerText.match(/Enabled/)) {
         // POST as lendable
-        modifyContent('Enabled');
+        addLendableBlock();
       }
     }
   }
