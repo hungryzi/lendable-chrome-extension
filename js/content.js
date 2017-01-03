@@ -38,22 +38,27 @@ function buildBlock(text, titleColor) {
   return div
 }
 
-function addNotLendableBlock() {
-  var lendableContent = buildBlock('Not Lendable', '#000')
-  var swatches = document.getElementById('tmmSwatches')
-  if (swatches && (divParent = swatches.getElementsByClassName('selected')[0])) {
-    divParent.appendChild(lendableContent)
+function addBlock(block) {
+  var divParent = (buybox = document.getElementById('buybox')) && buybox.firstElementChild
+  if (!divParent) {
+    divParent = (mediabox = document.getElementById('mediaNoAccordion')) && mediabox.getElementsByClassName('header-price')[0].parentElement
+    console.log('inserting', divParent, mediabox, buybox)
   }
+  if (divParent) {
+    console.log('inserting', divParent)
+    divParent.insertBefore(block, divParent.firstElementChild)
+  }
+}
+
+function addNotLendableBlock() {
+  var notLendableContent = buildBlock('Not Lendable', '#000')
+  addBlock(notLendableContent)
 }
 
 function addLendableBlock() {
   var title = document.getElementById('ebooksProductTitle').innerText
   var lendableContent = buildLendableContent(title)
-
-  var buybox = document.getElementById('buybox')
-  if (buybox && (divParent = buybox.firstChild)) {
-    divParent.insertBefore(lendableContent, divParent.firstChild)
-  }
+  addBlock(lendableContent)
 }
 
 if (detailsTable = document.getElementById('productDetailsTable')) {
