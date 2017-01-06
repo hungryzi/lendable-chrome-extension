@@ -25,19 +25,6 @@ function buildLendableContent(title) {
   return div
 }
 
-function buildBlock(text, titleColor) {
-  var title = document.createElement('h5')
-  title.setAttribute('style', 'color: ' + titleColor)
-  title.setAttribute('class', 'a-text-bold')
-  title.appendChild(document.createTextNode(text))
-
-  var div = document.createElement('div')
-  div.setAttribute('style', 'margin-bottom: 11px;')
-  div.appendChild(title)
-
-  return div
-}
-
 function addBlock(block) {
   var divParent = (buybox = document.getElementById('buybox')) && buybox.firstElementChild
   if (!divParent) {
@@ -59,23 +46,6 @@ function addLendableBlock() {
   addBlock(lendableContent)
 }
 
-function saveBook(isbn, lendable) {
-  firebase.database().ref('isbn/' + isbn).set({
-    lendable: lendable,
-    url: window.location.href,
-    updatedAt: firebase.database.ServerValue.TIMESTAMP
-  });
-}
-
-var config = {
-  apiKey: "AIzaSyC81fHoJ90ADQiz2WKp3mct-IOx2MmNk5k",
-  authDomain: "lendable-test.firebaseapp.com",
-  databaseURL: "https://lendable-test.firebaseio.com",
-  storageBucket: "lendable-test.appspot.com",
-  messagingSenderId: "715069538915"
-};
-firebase.initializeApp(config);
-
 if (detailsTable = document.getElementById('productDetailsTable')) {
   var isbn = undefined
   var items = detailsTable.getElementsByTagName('li')
@@ -85,16 +55,21 @@ if (detailsTable = document.getElementById('productDetailsTable')) {
     }
 
     if (item.innerText.match(/Lending/)) {
-      var title = document.getElementById('ebooksProductTitle').innerText
+      var titleEl = document.getElementById('ebooksProductTitle')
+      var title = titleEl ? titleEl.innerText.trim() : null
+
+      var imageEl = document.getElementById('imgBlkFront')
+      var imageUrl = imageEl ? imageEl.src : null
+
       if (item.innerText.match(/Not Enabled/)) {
         addNotLendableBlock();
         if (isbn) {
-          saveBook(isbn, false)
+          saveBook(isbn, false, title, imageUrl)
         }
       } else if (item.innerText.match(/Enabled/)) {
         addLendableBlock();
         if (isbn) {
-          saveBook(isbn, true)
+          saveBook(isbn, true, title, imageUrl)
         }
       }
     }
