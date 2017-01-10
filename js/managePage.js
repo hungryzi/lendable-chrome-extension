@@ -1,92 +1,94 @@
-// function injectScript(file, node) {
-//     var th = document.getElementsByTagName(node)[0];
-//     var s = document.createElement('script');
-//     s.setAttribute('type', 'text/javascript');
-//     s.setAttribute('src', file);
-//     th.appendChild(s);
+function injectScript(file, node) {
+    var th = document.getElementsByTagName(node)[0];
+    var s = document.createElement('script');
+    s.setAttribute('type', 'text/javascript');
+    s.setAttribute('src', file);
+    th.appendChild(s);
+}
+injectScript( chrome.extension.getURL('/js/inject.js'), 'body');
+console.log('finished injecting')
+
+// MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+// function getLoanActionEl(row) {
+//   return row.querySelector('#contentAction_loanTitle_myx')
 // }
-// injectScript( chrome.extension.getURL('/js/inject.js'), 'body');
 
-MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+// function getTitleEl(row) {
+//   var index = /\d+/.exec(row.id)
+//   return row.querySelector('#title' + index)
+// }
 
-function getLoanActionEl(row) {
-  return row.querySelector('#contentAction_loanTitle_myx')
-}
+// function getImageUrl(row) {
+//   var wrapper = row.getElementsByClassName('contentImage_myx')[0]
+//   return wrapper && wrapper.attributes['ui.load-src'].value;
+// }
 
-function getTitleEl(row) {
-  var index = /\d+/.exec(row.id)
-  return row.querySelector('#title' + index)
-}
+// function getIsbn(row) {
+//   var matches = /contentTabList_(\w*)/.exec(row.attributes.name.value)
+//   return matches && matches[1]
+// }
 
-function getImageUrl(row) {
-  var wrapper = row.getElementsByClassName('contentImage_myx')[0]
-  return wrapper.attributes['ui.load-src'].value;
-}
+// var processRow = function(row) {
+//   var button = row.getElementsByTagName('button')[0]
 
-function getIsbn(row) {
-  var matches = /contentTabList_(\w*)/.exec(row.attributes.name.value)
-  return matches && matches[1]
-}
+//   if (button) {
+//     // button.click()
 
-var processRow = function(row) {
-  var button = row.getElementsByTagName('button')[0]
+//     var loanAction = getLoanActionEl(row)
+//     var isbn = getIsbn(row)
 
-  if (button) {
-    button.click()
+//     var titleEl = getTitleEl(row)
+//     var title = titleEl ? titleEl.innerText.trim() : null
 
-    var loanAction = getLoanActionEl(row)
-    var isbn = getIsbn(row)
+//     var imageUrl = getImageUrl(row)
 
-    var titleEl = getTitleEl(row)
-    var title = titleEl ? titleEl.innerText.trim() : null
+//     var loanable = loanAction // && !(loanAction.offsetWidth <= 0 && loanAction.offsetHeight <= 0)
+//     console.log(isbn, loanable, title, imageUrl)
+//     saveBook(isbn, loanable, title, imageUrl)
 
-    var imageUrl = getImageUrl(row)
+//     var div = loanable ? buildBlock('Lendable', '#04b121') : buildBlock('Not Lendable', '#000')
+//     titleEl.parentNode.appendChild(div)
+//   }
+// }
 
-    var loanable = loanAction && !(loanAction.offsetWidth <= 0 && loanAction.offsetHeight <= 0)
-    saveBook(isbn, loanable, title, imageUrl)
+// var observerForRows = new MutationObserver(function(mutations, observer) {
+//   for (var i = 0, len = mutations.length; i !== len; i++) {
+//     var mutation = mutations[i]
 
-    var div = loanable ? buildBlock('Lendable', '#04b121') : buildBlock('Not Lendable', '#000')
-    titleEl.parentNode.appendChild(div)
-  }
-}
+//     for (var j = 0, lenJ = mutation.addedNodes.length; j !== lenJ; j++) {
+//       var node = mutation.addedNodes[j]
 
-var observerForRows = new MutationObserver(function(mutations, observer) {
-  for (var i = 0, len = mutations.length; i !== len; i++) {
-    var mutation = mutations[i]
+//       if (node.className && node.className.match(/contentTableListRow_myx/)) {
+//         var row = node.querySelector('[id^="contentTabList_"]')
+//         if (row) processRow(row)
+//       }
+//     }
+//   }
+// });
 
-    for (var j = 0, lenJ = mutation.addedNodes.length; j !== lenJ; j++) {
-      var node = mutation.addedNodes[j]
+// var observerForContainer = new MutationObserver(function(mutations, observer) {
+//   for (var i = 0, len = mutations.length; i !== len; i++) {
+//     var mutation = mutations[i]
 
-      if (node.className && node.className.match(/contentTableListRow_myx/)) {
-        var row = node.querySelector('[id^="contentTabList_"]')
-        if (row) processRow(row)
-      }
-    }
-  }
-});
+//     if (mutation.target.tagName === 'UL' && mutation.target.className.match(/nav nav-grid/)) {
+//       var ul = mutation.target
 
-var observerForContainer = new MutationObserver(function(mutations, observer) {
-  for (var i = 0, len = mutations.length; i !== len; i++) {
-    var mutation = mutations[i]
+//       observerForRows.observe(ul, { childList: true });
+//       observerForContainer.disconnect()
 
-    if (mutation.target.tagName === 'UL' && mutation.target.className.match(/nav nav-grid/)) {
-      var ul = mutation.target
+//       var wrappedRows = ul.getElementsByClassName('contentTableListRow_myx')
+//       for (var j = 0, lenJ = wrappedRows.length; j !== lenJ; j++) {
+//         var row = wrappedRows[j].querySelector('[id^="contentTabList_"]')
+//         if (row) processRow(row)
+//       }
 
-      observerForRows.observe(ul, { childList: true });
-      observerForContainer.disconnect()
+//       return
+//     }
+//   }
+// });
 
-      var wrappedRows = ul.getElementsByClassName('contentTableListRow_myx')
-      for (var j = 0, lenJ = wrappedRows.length; j !== lenJ; j++) {
-        var row = wrappedRows[j].querySelector('[id^="contentTabList_"]')
-        if (row) processRow(row)
-      }
-
-      return
-    }
-  }
-});
-
-observerForContainer.observe(document.getElementById('ng-app'), {
-  childList: true,
-  subtree: true
-});
+// observerForContainer.observe(document.getElementById('ng-app'), {
+//   childList: true,
+//   subtree: true
+// });

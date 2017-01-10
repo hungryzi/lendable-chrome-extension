@@ -9,6 +9,7 @@
     "48": "icons/lendable48.png",
     "128": "icons/lendable128.png"
   },
+  "web_accessible_resources" : ["/js/inject.js"],
   "content_scripts": [
     {
       "matches": ["https://www.amazon.com/*-ebook*"],
