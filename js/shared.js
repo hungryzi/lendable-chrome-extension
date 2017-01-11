@@ -28,3 +28,34 @@ function buildBlock(text, titleColor) {
 
   return div
 }
+
+function buildLendableBlock(title, prefix) {
+  var encodedTitle = encodeURI(title)
+
+  var booklendingUrl = 'http://www.booklending.com/borrow-book.htm?search=' + encodedTitle
+  var booklendingLink = createLink(booklendingUrl, prefix + 'BookLending.com')
+
+  var lendleUrl = 'http://lendle.me/books/available/?title=' + encodedTitle
+  var lendleLink = createLink(lendleUrl, prefix + 'Lendle.me')
+
+  var div = buildBlock('Lendable', '#04b121')
+  div.appendChild(booklendingLink)
+  div.appendChild(document.createElement('br'))
+  div.appendChild(lendleLink)
+
+  return div
+}
+
+function buildNotLendableBlock() {
+  return buildBlock('Not Lendable', '#000')
+}
+
+function createLink(url, label) {
+  var anchor = document.createElement('a');
+  anchor.setAttribute('href', url);
+  anchor.setAttribute('class', 'a-size-mini')
+  anchor.setAttribute('target', '_blank')
+  var text = document.createTextNode(label);
+  anchor.appendChild(text);
+  return anchor;
+}

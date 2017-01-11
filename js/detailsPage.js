@@ -1,30 +1,3 @@
-function createLink(url, name) {
-  var anchor = document.createElement('a');
-  anchor.setAttribute('href', url);
-  anchor.setAttribute('class', 'a-size-mini')
-  anchor.setAttribute('target', '_blank')
-  var text = document.createTextNode('Search on ' + name);
-  anchor.appendChild(text);
-  return anchor;
-}
-
-function buildLendableContent(title) {
-  var encodedTitle = encodeURI(title)
-
-  var booklendingUrl = 'http://www.booklending.com/borrow-book.htm?search=' + encodedTitle
-  var booklendingLink = createLink(booklendingUrl, 'BookLending.com')
-
-  var lendleUrl = 'http://lendle.me/books/available/?title=' + encodedTitle
-  var lendleLink = createLink(lendleUrl, 'Lendle.me')
-
-  var div = buildBlock('Lendable', '#04b121')
-  div.appendChild(booklendingLink)
-  div.appendChild(document.createElement('br'))
-  div.appendChild(lendleLink)
-
-  return div
-}
-
 function addBlock(block) {
   var divParent = (buybox = document.getElementById('buybox')) && buybox.firstElementChild
   if (!divParent) {
@@ -36,13 +9,13 @@ function addBlock(block) {
 }
 
 function addNotLendableBlock() {
-  var notLendableContent = buildBlock('Not Lendable', '#000')
+  var notLendableContent = buildNotLendableBlock()
   addBlock(notLendableContent)
 }
 
 function addLendableBlock() {
   var title = document.getElementById('ebooksProductTitle').innerText
-  var lendableContent = buildLendableContent(title)
+  var lendableContent = buildLendableBlock(title, 'Search on ')
   addBlock(lendableContent)
 }
 
