@@ -1,25 +1,21 @@
-function buildBlock(text, titleColor) {
-  var title = document.createElement('h5')
-  title.setAttribute('style', 'color: ' + titleColor)
-  title.setAttribute('class', 'a-text-bold')
-  title.appendChild(document.createTextNode(text))
-
-  var div = document.createElement('div')
-  div.setAttribute('style', 'margin-bottom: 11px;')
-  div.appendChild(title)
-
-  return div
-}
-
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-function getItem(isbn) {
+function report(item) {
+  window.postMessage({ type: "LENDABLE_FROM_PAGE", item }, "*");
+}
+
+function getItem(row) {
+  const index = /\d+/.exec(row.id)
+  const isbn = getIsbn(row)
+
   const items = getItems()
   for (var i = 0, len = items.length; i !== len; i++) {
     var item = items[i]
     if (item.getAsin() !== isbn) continue;
 
     return {
+      isbn: isbn,
+      index: index,
       title: item.getTitle(),
       loanable: item.canLoan(),
       imageUrl: item.getImage(),
@@ -33,39 +29,14 @@ function getItems() {
   return content.getContent();
 }
 
-function getLoanActionEl(row) {
-  return row.querySelector('#contentAction_loanTitle_myx')
-}
-
-function getTitleEl(row) {
-  var index = /\d+/.exec(row.id)
-  return row.querySelector('#title' + index)
-}
-
-function getImageUrl(row) {
-  var wrapper = row.getElementsByClassName('contentImage_myx')[0]
-  return wrapper && wrapper.attributes['ui.load-src'].value;
-}
-
 function getIsbn(row) {
   var matches = /contentTabList_(\w*)/.exec(row.attributes.name.value)
   return matches && matches[1]
 }
 
 var processRow = function(row) {
-  var button = row.getElementsByTagName('button')[0]
-  var isbn = getIsbn(row)
-  var item = getItem(isbn)
-  var index = /\d+/.exec(row.id)
-  const titleEl = row.querySelector('#title' + index)
-  const loanable = item.loanable
-
-  console.log(item)
-
-  // saveBook(isbn, loanable, item.title, item.imageUrl)
-
-  var div = loanable ? buildBlock('Lendable', '#04b121') : buildBlock('Not Lendable', '#000')
-  titleEl.parentNode.appendChild(div)
+  const item = getItem(row)
+  report(item)
 }
 
 var observerForRows = new MutationObserver(function(mutations, observer) {
