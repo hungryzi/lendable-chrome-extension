@@ -55,6 +55,7 @@ function createLink(url, label) {
   anchor.setAttribute('href', url);
   anchor.setAttribute('class', 'a-size-mini')
   anchor.setAttribute('target', '_blank')
+  anchor.setAttribute('onclick', 'window.open("' + url + '", "_blank")')
   var text = document.createTextNode(label);
   anchor.appendChild(text);
   return anchor;
