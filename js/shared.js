@@ -5,7 +5,6 @@ function saveBook(item) {
   const isbn = item.isbn
   delete item.isbn
 
-  console.log(item)
   let entry = firebase.database().ref('isbn/' + isbn)
   entry.update(item)
 }
