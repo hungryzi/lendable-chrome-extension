@@ -2,7 +2,7 @@
   "name": "Lendable",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Detect lendable e-books",
+  "description": "This detects lendable Kindle books on the Amazon product page and your digital content management page.",
   "homepage_url": "http://hungryzi.com",
   "icons": {
     "16": "icons/lendable16.png",
@@ -13,13 +13,11 @@
   "content_scripts": [
     {
       "matches": ["https://www.amazon.com/*"],
-      "js": ["js/firebase.js", "js/shared.js", "js/detailsPage.js"],
-      "run_at": "document_end"
+      "js": ["js/firebase.js", "js/shared.js", "js/detailsPage.js"]
     },
     {
       "matches": ["https://www.amazon.com/mn/dcw/myx.html*"],
-      "js": ["js/firebase.js", "js/shared.js", "js/managePage.js"],
-      "run_at": "document_end"
+      "js": ["js/firebase.js", "js/shared.js", "js/managePage.js"]
     }
   ]
 }
