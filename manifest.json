@@ -1,9 +1,9 @@
 {
-  "name": "Lendable",
+  "name": "Find lendable Kindle books",
   "short_name": "Lendable",
   "version": "0.1.0",
   "manifest_version": 2,
-  "description": "This detects lendable Kindle books on the Amazon product page and your digital content management page.",
+  "description": "Notify you if the Kindle books you want can be borrowed!",
   "homepage_url": "https://lendable-chrome-extension.github.io",
   "icons": {
     "16": "icons/lendable16.png",
