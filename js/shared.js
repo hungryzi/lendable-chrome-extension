@@ -32,7 +32,7 @@ function buildBlock(text, titleColor) {
 }
 
 function buildLendableBlock(title, managePage) {
-  var encodedTitle = encodeURI(title)
+  var encodedTitle = encodeURIComponent(title)
 
   const prefix = managePage ? 'Lend this book on ' : 'Search on '
   const withOnClick = managePage
