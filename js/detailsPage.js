@@ -31,8 +31,9 @@ if (detailsTable = document.getElementById('productDetailsTable')) {
       var titleEl = document.getElementById('ebooksProductTitle')
       var title = titleEl ? titleEl.innerText.trim() : null
 
-      var imageEl = document.getElementById('imgBlkFront')
+      var imageEl = document.getElementById('imgBlkFront') || document.getElementById('ebooksImgBlkFront')
       var imageUrl = imageEl ? imageEl.src : null
+      imageUrl = imageUrl.match(/^http/) ? imageUrl : null
 
       if (item.innerText.match(/Not Enabled/)) {
         addNotLendableBlock();
