@@ -35,16 +35,27 @@ if (detailsTable = document.getElementById('productDetailsTable')) {
       var imageUrl = imageEl ? imageEl.src : null
       imageUrl = imageUrl.match(/^http/) ? imageUrl : null
 
+      const authorEls = document.getElementsByClassName('author')
+      const authors = [].slice.call(authorEls).map(function(author) {
+        authorEl = author.querySelector('.contributorNameID') || author.querySelector('a')
+        return authorEl && authorEl.innerText
+      }).join(", ")
+
+      const entry = {
+        isbn: isbn,
+        title: title,
+        imageUrl: imageUrl,
+        authors: authors
+      }
+
       if (item.innerText.match(/Not Enabled/)) {
-        addNotLendableBlock();
-        if (isbn) {
-          saveBook(isbn, false, title, imageUrl)
-        }
+        entry.lendable = false
+        addNotLendableBlock()
+        saveBook(entry)
       } else if (item.innerText.match(/Enabled/)) {
-        addLendableBlock();
-        if (isbn) {
-          saveBook(isbn, true, title, imageUrl)
-        }
+        entry.lendable = true
+        addLendableBlock()
+        saveBook(entry)
       }
     }
   }

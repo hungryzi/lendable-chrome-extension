@@ -1,12 +1,13 @@
-function saveBook(isbn, lendable, title = null, imageUrl = null) {
+function saveBook(item) {
+  item.url = window.location.href
+  item.updatedAt = firebase.database.ServerValue.TIMESTAMP
+
+  const isbn = item.isbn
+  delete item.isbn
+
+  console.log(item)
   let entry = firebase.database().ref('isbn/' + isbn)
-  entry.update({
-    lendable: lendable,
-    url: window.location.href,
-    title: title,
-    imageUrl: imageUrl,
-    updatedAt: firebase.database.ServerValue.TIMESTAMP
-  });
+  entry.update(item)
 }
 
 var config = {

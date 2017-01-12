@@ -8,11 +8,14 @@ function injectScript(file, node) {
 injectScript(chrome.extension.getURL('/js/inject.js'), 'body');
 
 function processItem(item) {
-  const titleEl = document.querySelector('#title' + item.index)
+  const index = item.index
+  delete item.index
+
+  const titleEl = document.querySelector('#title' + index)
   const loanable = item.loanable
   const title = item.title
 
-  saveBook(item.isbn, loanable, title, item.imageUrl)
+  saveBook(item)
 
   var div = loanable ? buildLendableBlock(title, 'Lend this book on ') : buildNotLendableBlock()
   titleEl.parentNode.appendChild(div)

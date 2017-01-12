@@ -6,20 +6,16 @@ function report(item) {
 
 function getItem(row) {
   const index = /\d+/.exec(row.id)
-  const isbn = getIsbn(row)
-
   const items = getItems()
-  for (var i = 0, len = items.length; i !== len; i++) {
-    var item = items[i]
-    if (item.getAsin() !== isbn) continue;
+  const item = items[index]
 
-    return {
-      isbn: isbn,
-      index: index,
-      title: item.getTitle(),
-      loanable: item.canLoan(),
-      imageUrl: item.getImage(),
-    }
+  return {
+    index: index,
+    isbn: item.getAsin(),
+    title: item.getTitle(),
+    lendable: item.canLoan(),
+    imageUrl: item.getImage(),
+    authors: item.getAuthors(),
   }
 }
 
@@ -29,12 +25,7 @@ function getItems() {
   return content.getContent();
 }
 
-function getIsbn(row) {
-  var matches = /contentTabList_(\w*)/.exec(row.attributes.name.value)
-  return matches && matches[1]
-}
-
-var processRow = function(row) {
+function processRow(row) {
   report(getItem(row))
 }
 
