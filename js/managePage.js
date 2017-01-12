@@ -12,12 +12,12 @@ function processItem(item) {
   delete item.index
 
   const titleEl = document.querySelector('#title' + index)
-  const loanable = item.loanable
+  const lendable = item.lendable
   const title = item.title
 
   saveBook(item)
 
-  var div = loanable ? buildLendableBlock(title, 'Lend this book on ') : buildNotLendableBlock()
+  var div = lendable ? buildLendableBlock(title, 'Lend this book on ') : buildNotLendableBlock()
   titleEl.parentNode.appendChild(div)
 }
 
