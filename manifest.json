@@ -17,7 +17,7 @@
       "run_at": "document_end"
     },
     {
-      "matches": ["https://www.amazon.com/mn/dcw/myx.html"],
+      "matches": ["https://www.amazon.com/mn/dcw/myx.html*"],
       "js": ["js/firebase.js", "js/shared.js", "js/managePage.js"],
       "run_at": "document_end"
     }
