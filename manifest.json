@@ -12,7 +12,7 @@
   "web_accessible_resources" : ["/js/inject.js"],
   "content_scripts": [
     {
-      "matches": ["https://www.amazon.com/*-ebook*"],
+      "matches": ["https://www.amazon.com/*"],
       "js": ["js/firebase.js", "js/shared.js", "js/detailsPage.js"],
       "run_at": "document_end"
     },
