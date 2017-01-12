@@ -38,7 +38,7 @@ if (detailsTable = document.getElementById('productDetailsTable')) {
       const authorEls = document.getElementsByClassName('author')
       const authors = [].slice.call(authorEls).map(function(author) {
         authorEl = author.querySelector('.contributorNameID') || author.querySelector('a')
-        return authorEl && authorEl.innerText
+        return authorEl && authorEl.innerText.trim()
       }).join(", ")
 
       const entry = {
