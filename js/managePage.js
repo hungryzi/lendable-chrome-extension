@@ -17,7 +17,7 @@ function processItem(item) {
 
   saveBook(item)
 
-  var div = lendable ? buildLendableBlock(title, 'Lend this book on ') : buildNotLendableBlock()
+  var div = lendable ? buildLendableBlock(title, true) : buildNotLendableBlock()
   titleEl.parentNode.appendChild(div)
 }
 

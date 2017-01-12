@@ -31,14 +31,17 @@ function buildBlock(text, titleColor) {
   return div
 }
 
-function buildLendableBlock(title, prefix) {
+function buildLendableBlock(title, managePage) {
   var encodedTitle = encodeURI(title)
 
+  const prefix = managePage ? 'Lend this book on ' : 'Search on '
+  const withOnClick = managePage
+
   var booklendingUrl = 'http://www.booklending.com/borrow-book.htm?search=' + encodedTitle
-  var booklendingLink = createLink(booklendingUrl, prefix + 'BookLending.com')
+  var booklendingLink = createLink(booklendingUrl, prefix + 'BookLending.com', withOnClick)
 
   var lendleUrl = 'http://lendle.me/books/available/?title=' + encodedTitle
-  var lendleLink = createLink(lendleUrl, prefix + 'Lendle.me')
+  var lendleLink = createLink(lendleUrl, prefix + 'Lendle.me', withOnClick)
 
   var div = buildBlock('Lendable', '#04b121')
   div.appendChild(booklendingLink)
@@ -52,12 +55,14 @@ function buildNotLendableBlock() {
   return buildBlock('Not Lendable', '#000')
 }
 
-function createLink(url, label) {
+function createLink(url, label, withOnClick) {
   var anchor = document.createElement('a');
   anchor.setAttribute('href', url);
   anchor.setAttribute('class', 'a-size-mini')
   anchor.setAttribute('target', '_blank')
-  anchor.setAttribute('onclick', 'window.open("' + url + '", "_blank")')
+  if (withOnClick) {
+    anchor.setAttribute('onclick', 'window.open("' + url + '", "_blank")')
+  }
   var text = document.createTextNode(label);
   anchor.appendChild(text);
   return anchor;

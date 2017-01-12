@@ -15,7 +15,7 @@ function addNotLendableBlock() {
 
 function addLendableBlock() {
   var title = document.getElementById('ebooksProductTitle').innerText
-  var lendableContent = buildLendableBlock(title, 'Search on ')
+  var lendableContent = buildLendableBlock(title, false)
   addBlock(lendableContent)
 }
 
