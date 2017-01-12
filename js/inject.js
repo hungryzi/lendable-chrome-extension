@@ -35,8 +35,7 @@ function getIsbn(row) {
 }
 
 var processRow = function(row) {
-  const item = getItem(row)
-  report(item)
+  report(getItem(row))
 }
 
 var observerForRows = new MutationObserver(function(mutations, observer) {
@@ -54,22 +53,31 @@ var observerForRows = new MutationObserver(function(mutations, observer) {
   }
 });
 
+function processUl(ul) {
+  observerForRows.observe(ul, { childList: true });
+  // observerForContainer.disconnect()
+
+  var wrappedRows = ul.getElementsByClassName('contentTableListRow_myx')
+  for (var j = 0, lenJ = wrappedRows.length; j !== lenJ; j++) {
+    var row = wrappedRows[j].querySelector('[id^="contentTabList_"]')
+    if (row) processRow(row)
+  }
+
+  ul.className += ' lendable_processed';
+}
+
+function isUnprocessedUl(node) {
+  return node.tagName === 'UL' &&
+    node.className.match(/nav nav-grid/) &&
+    !node.className.match(/lendable_processed/)
+}
+
 var observerForContainer = new MutationObserver(function(mutations, observer) {
   for (var i = 0, len = mutations.length; i !== len; i++) {
     var mutation = mutations[i]
 
-    if (mutation.target.tagName === 'UL' && mutation.target.className.match(/nav nav-grid/)) {
-      var ul = mutation.target
-
-      observerForRows.observe(ul, { childList: true });
-      observerForContainer.disconnect()
-
-      var wrappedRows = ul.getElementsByClassName('contentTableListRow_myx')
-      for (var j = 0, lenJ = wrappedRows.length; j !== lenJ; j++) {
-        var row = wrappedRows[j].querySelector('[id^="contentTabList_"]')
-        if (row) processRow(row)
-      }
-
+    if (isUnprocessedUl(mutation.target)) {
+      processUl(mutation.target)
       return
     }
   }
