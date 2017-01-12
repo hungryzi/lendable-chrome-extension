@@ -1,8 +1,10 @@
 function saveBook(isbn, lendable, title = null, imageUrl = null) {
-  firebase.database().ref('isbn/' + isbn).set({
+  let entry = firebase.database().ref('isbn/' + isbn)
+  entry.update({
     lendable: lendable,
     url: window.location.href,
     title: title,
+    imageUrl: imageUrl,
     updatedAt: firebase.database.ServerValue.TIMESTAMP
   });
 }
